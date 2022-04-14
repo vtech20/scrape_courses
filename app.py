@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen as uReq
 import json
 import pymongo
-
+import sys
+import traceback
 
 app = Flask(__name__)
 
@@ -93,6 +94,7 @@ def index():
             return render_template('results.html', extracts=extracts[0:(len(extracts)-1)])
         except Exception as e:
             print('The Exception message is: ',e)
+            print(traceback.format_exc())
             return 'something is wrong'
     # return render_template('results.html')
 
