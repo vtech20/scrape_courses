@@ -24,6 +24,7 @@ def index():
             uClient = requests.get(url)
             ineuron_html = bs(uClient.content, "html.parser")
             scrap_data = ineuron_html.find_all('script')[14].text.strip()
+            print(scrap_data)
             json_data = json.loads(scrap_data)
             init_courses = json_data['props']['pageProps']['initialState']['filter']['initCourses']
             instructor_details = json_data['props']['pageProps']['initialState']['init']['instructors']
