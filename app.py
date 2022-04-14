@@ -24,7 +24,6 @@ def index():
             uClient = requests.get(url)
             ineuron_html = bs(uClient.content, "html.parser")
             scrap_data = ineuron_html.find_all('script')[14].text.strip()
-            print(scrap_data)
             json_data = json.loads(scrap_data)
             init_courses = json_data['props']['pageProps']['initialState']['filter']['initCourses']
             instructor_details = json_data['props']['pageProps']['initialState']['init']['instructors']
@@ -32,7 +31,7 @@ def index():
             for keys, values in instructor_details.items():
                 inst_dict[keys] = values['name']
             extracts = []
-            for idx,i in enumerate(init_courses):
+            for idx,i in enumerate(init_courses[0:50]):
                 extract_dict = {}
                 extract_dict['course_name'] = init_courses[idx]['title']
                 extract_dict['course_description'] = init_courses[idx]['description']
@@ -91,6 +90,7 @@ def index():
             collection = db['ineuron_courses_collection']
             collection.insert_many(extracts)
             print(f'inserted {len(extracts)} extracts')
+            
             
             return render_template('results.html', extracts=extracts[0:(len(extracts)-1)])
         except Exception as e:
